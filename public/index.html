@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎸</text></svg>">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=fallback" rel="stylesheet">
+    <title>Spoty to YT</title>
+</head>
+<body>
+    <header>
+        <form>
+            <label for="listId">
+                <b>Spotify</b>
+                playlist or album ID
+            </label>
+            <div>
+                <input
+                    type="text"
+                    id="listId"
+                    placeholder=""
+                    value="https://open.spotify.com/playlist/4smH2TyPmyLH5bBw28vGyH?si=7QNw1akRQf-E2z0MdQYnDg"
+                    required />
+                <button type="submit">Go!</button>
+            </div>
+        </form>
+    </header>
+    <main id="output"></main>
+
+    <script>
+        const form = document.querySelector('form');
+        const output = document.querySelector('#output');
+        const button = document.querySelector('button');
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            const url = e.target[0].value;
+
+            button.disabled = true;
+            output.innerHTML = `<p><a href="https://dashboard.automationcloud.net/jobs?serviceId=44297322-a2fd-485a-a98a-eb268599735c&limit=1" target="__dashboard">Job</a> created. Now wait...</p>`;
+
+            try {
+
+                const res = await fetch(`/api/getSongs?url=${url}`);
+                const outcome = await res.json();
+
+                output.innerHTML = outcome.state === 'success' ?
+                    listWrapperUi(outcome.output) :
+                    errorUi(outcome.error.name || 'Something went wrong');
+
+            } catch (err) {
+                output.innerHTML = errorUi(err.message || 'Something went wrong');
+            }
+
+            button.disabled = false;
+        });
+
+        function listItemUo({ name, artist, URL, thumbnail }) {
+            return `<li><article><img src=${thumbnail}><header><b>${name}</b><small>${artist}</small></header><address><a href="${URL}" target="__song">${URL}</a></address></article></li>`;
+        }
+
+        function listWrapperUi(items = []) {
+            const songItems = items
+                .map(item => {
+                    const { spotify, youtube } = item;
+                    const song = {
+                        name: spotify.name,
+                        artist: spotify.artist,
+                        URL: youtube.URL,
+                        thumbnail: youtube.thumbnail
+                    };
+                    return listItemUo(song);
+                });
+            return `<section>
+                <header>Here are your ${plrz(songItems, 'song')}</header>
+                <ul>${songItems.join('')}</ul>
+            </section>`;
+
+            function plrz(arr, word) {
+                return `${arr.length} ${arr.length.toString().endsWith('1') ? word : word + 's'}`;
+            }
+        }
+
+        function errorUi(errMessage) {
+            return `<p>${errMessage} \nSorry about that.</p>`;
+        }
+    </script>
+</body>
+</html>

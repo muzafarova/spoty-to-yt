@@ -1,0 +1,23 @@
+{
+  "name": "spoty-to-yt",
+  "version": "1.0.0",
+  "description": "An app to fetch songs from Spotify and find them on YT",
+  "scripts": {
+    "start": "vercel dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:muzafarova/hackathon-spoty-to-yt.git"
+  },
+  "keywords": [
+    "automationcloud",
+    "robot"
+  ],
+  "author": "muzafarova",
+  "license": "MIT",
+  "homepage": "",
+  "dependencies": {
+    "@automationcloud/cloud-robot": "^1.0.0-rc.14"
+  }
+}

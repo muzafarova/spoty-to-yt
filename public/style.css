@@ -1,0 +1,169 @@
+:root {
+    --gap: 1rem;
+    --font-family: 'Tahoma', 'Verdana', 'Arial', sans-serif;
+    --font-family--title: var(--font-family);
+    --font-family--mono: 'Cutive Mono', monospace;;
+    --font-family--cta: var(--font-family--title);
+    --background: black;
+    --color: white;
+    --color--cta: #65D36E;
+    --border-radius: 10px;
+    --border-size: 3px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-family);
+    padding: 0;
+    margin: 0;
+    color: var(--color);
+    background-color: var(--background);
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+a {
+    color: var(--color--cta);
+}
+
+small {
+    font-size: .8em;
+}
+
+label,
+article header {
+    font-family: var(--font-family--title);
+}
+
+form {
+    background: var(--color--cta);
+    padding: var(--gap);
+}
+
+form div {
+    display: flex;
+    font-size: 1.5em;
+}
+
+form div:focus-within {
+    box-shadow: 0 0 10px 4px greenyellow;
+    border-radius: 10px;
+}
+
+label {
+    flex: 1;
+    display: block;
+    margin: 0 0 .2rem;
+    color: var(--background);
+    font-size: 1.5em;
+    font-weight: 500;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    letter-spacing: .025em;
+}
+
+input {
+    width: 100%;
+    font-size: 1.25em;
+    border: var(--border-size) solid var(--background);
+    color: var(--background);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+    background: var(--color);
+    padding-left: .5em;
+    text-overflow: ellipsis;
+    font-family: var(--font-family--mono);
+}
+
+input:focus {
+    outline: none;
+}
+
+button {
+    margin-left: calc(-1 * var(--border-size));
+    border: var(--border-size) solid transparent;
+    background: var(--background);
+    color: var(--color);
+    font-size: 1em;
+    padding: .25em 1em;
+    letter-spacing: .01em;
+    font-family: var(--font-family--cta);
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+b {
+    font-weight: 600;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 1em 0;
+    padding: .5em var(--gap);
+    white-space: break-spaces;
+    line-height: 1.35;
+}
+
+li {
+    display: flex;
+}
+
+main {
+    background-color: var(--background);
+    background-image: url('./ubio.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50vh;
+}
+
+section {
+    background-color: var(--background);
+}
+
+section > header {
+    padding: 1rem var(--gap);
+    font-variant: small-caps;
+    font-size: 2em;
+    font-style: italic;
+}
+
+article {
+    display: grid;
+    padding: 1em var(--gap);
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-column-gap: var(--gap);
+}
+
+article img {
+    grid-row: 1/-1;
+    width: 110px;
+}
+
+article header {
+    display: flex;
+    flex-direction: column;
+    white-space: break-spaces;
+    line-height: 1.35;
+}
+
+article address {
+    padding: .2rem 0;
+    font-style: normal;
+    font-size: 80%;
+}
