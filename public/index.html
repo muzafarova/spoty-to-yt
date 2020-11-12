@@ -41,17 +41,16 @@
             button.disabled = true;
             output.innerHTML = `<p><a href="https://dashboard.automationcloud.net/jobs?serviceId=44297322-a2fd-485a-a98a-eb268599735c&limit=1" target="__dashboard">Job</a> created. Now wait...</p>`;
 
-            try {
 
-                const res = await fetch(`/api/getSongs?url=${url}`);
+            const res = await fetch(`/api/getSongs?url=${url}`);
+            if (res.ok) {
                 const outcome = await res.json();
 
                 output.innerHTML = outcome.state === 'success' ?
                     listWrapperUi(outcome.output) :
                     errorUi(outcome.error.name || 'Something went wrong');
-
-            } catch (err) {
-                output.innerHTML = errorUi(err.message || 'Something went wrong');
+            } else {
+                output.innerHTML = errorUi('Something went wrong :-(');
             }
 
             button.disabled = false;

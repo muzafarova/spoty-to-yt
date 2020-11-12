@@ -56,14 +56,12 @@ async function main(robot, url) {
             output
         };
 
-    } else if (state === 'fail') {
-        const error = await job.getErrorInfo();
-        console.error('Job failed with error:', error);
-        return {
-            state,
-            error
-        };
     }
 
-    throw new Error('Task has timed out.');
+    const error = await job.getErrorInfo();
+    console.error('Job failed with error:', error);
+    return {
+        state,
+        error
+    };
 }
