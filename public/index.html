@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=fallback" rel="stylesheet">
-    <title>Spoty to YT</title>
+    <title>Spotify to YouTube</title>
 </head>
 <body>
     <header>
@@ -27,40 +27,70 @@
             </div>
         </form>
     </header>
-    <main id="output"></main>
+    <main id="result"></main>
 
     <script>
         const form = document.querySelector('form');
-        const output = document.querySelector('#output');
+        const result = document.querySelector('#result');
         const button = document.querySelector('button');
 
         form.addEventListener('submit', async e => {
             e.preventDefault();
             const url = e.target[0].value;
 
-            button.disabled = true;
-            output.innerHTML = `<p><a href="https://dashboard.automationcloud.net/jobs?serviceId=44297322-a2fd-485a-a98a-eb268599735c&limit=1" target="__dashboard">Job</a> created. Now wait...</p>`;
-
-
-            const res = await fetch(`/api/getSongs?url=${url}`);
-            if (res.ok) {
-                const outcome = await res.json();
-
-                output.innerHTML = outcome.state === 'success' ?
-                    listWrapperUi(outcome.output) :
-                    errorUi(outcome.error.name || 'Something went wrong');
-            } else {
-                output.innerHTML = errorUi('Something went wrong :-(');
+            let output = null;
+            try {
+                output = await main(url);
+            } catch (err) {
+                result.innerHTML = errorUi(err.message || 'Something went wrong :-(');
+            } finally {
+                button.disabled = false;
             }
 
-            button.disabled = false;
+            result.innerHTML = listWrapperUi(output);
         });
+
+        async function main(url) {
+            const { jobId } = await apiCall(`/api/createJob?url=${url}`);
+            if (!jobId) {
+                throw new Error('No jobId');
+            }
+
+            button.disabled = true;
+            result.innerHTML = `<p>Automation <a href="https://dashboard.automationcloud.net/jobs/${jobId}" target="__dashboard">Job</a> created. Now wait... <div class="loader">Loading...</div></p>`;
+
+            let output = null;
+            while (!output) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                const data = await apiCall(`/api/getFinalOutput?jobId=${jobId}`);
+
+                output = data?.output;
+                console.info('output', output);
+            }
+            return output;
+        }
+
+        async function apiCall(path) {
+            const res = await fetch(path);
+            if (!res.ok) {
+                throw new Error(`Fetch failed with ${res.status}`);
+            }
+            if (res.status === 204) {
+                return;
+            }
+
+            return await res.json();
+        }
 
         function listItemUo({ name, artist, URL, thumbnail }) {
             return `<li><article><img src=${thumbnail}><header><b>${name}</b><small>${artist}</small></header><address><a href="${URL}" target="__song">${URL}</a></address></article></li>`;
         }
 
         function listWrapperUi(items = []) {
+            if (!Array.isArray(items)) {
+                throw new Error('items must be array');
+            }
             const songItems = items
                 .map(item => {
                     const { spotify, youtube } = item;

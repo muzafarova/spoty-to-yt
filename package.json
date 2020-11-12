@@ -1,7 +1,7 @@
 {
   "name": "spoty-to-yt",
   "version": "1.0.0",
-  "description": "An app to fetch songs from Spotify and find them on YT",
+  "description": "An app to fetch songs from Spotify and find them on YouTube",
   "scripts": {
     "start": "vercel dev",
     "test": "echo \"Error: no test specified\" && exit 1"
