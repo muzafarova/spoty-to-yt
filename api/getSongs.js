@@ -36,29 +36,34 @@ async function main(robot, url) {
     const job = await robot.createJob({
         input: { url },
     });
-    console.log('Job created.', job._jobId);
+    console.log('Job created.');
 
-    const [output] = await job.waitForOutputs('value');
-    console.info('output', output);
+    let output;
+    job.onOutput('value', async outputData => {
+        output = outputData;
+        console.info('Job output', output);
+    });
 
     await job.waitForCompletion();
     console.log('Job completed.');
 
     const state = await job.getState();
-    console.info('state', state);
+    console.info('Job state:', state);
 
     if (state === 'success') {
         return {
             state,
             output
         };
+
+    } else if (state === 'fail') {
+        const error = await job.getErrorInfo();
+        console.error('Job failed with error:', error);
+        return {
+            state,
+            error
+        };
     }
 
-    const error = await job.getErrorInfo();
-    console.info('error', error);
-
-    return {
-        state,
-        error
-    };
+    throw new Error('Task has timed out.');
 }
