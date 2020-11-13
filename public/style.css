@@ -1,12 +1,14 @@
 :root {
     --gap: 1rem;
+    --font-size: 15px;
+    --font-size--small: 13px;
     --font-family: 'Tahoma', 'Verdana', 'Arial', sans-serif;
     --font-family--title: var(--font-family);
     --font-family--mono: 'Cutive Mono', monospace;;
     --font-family--cta: var(--font-family--title);
-    --background: black;
+    --background: #111;
     --color: white;
-    --color--cta: #65D36E;
+    --color--cta: #57B560;
     --border-radius: 10px;
     --border-size: 3px;
 }
@@ -17,6 +19,7 @@ html {
 
 body {
     font-family: var(--font-family);
+    font-size: var(--font-size);
     padding: 0;
     margin: 0;
     color: var(--color);
@@ -31,7 +34,7 @@ a {
 }
 
 small {
-    font-size: .8em;
+    font-size: var(--font-size--small);
 }
 
 label,
@@ -139,7 +142,7 @@ main {
 section > header {
     padding: 1rem var(--gap);
     font-variant: small-caps;
-    font-size: 2em;
+    font-size: 1.5em;
     font-style: italic;
 }
 
@@ -151,8 +154,11 @@ article {
     grid-column-gap: var(--gap);
 }
 
-article img {
+article > a {
     grid-row: 1/-1;
+}
+
+article img {
     width: 110px;
 }
 
@@ -166,7 +172,7 @@ article header {
 article address {
     padding: .2rem 0;
     font-style: normal;
-    font-size: 80%;
+    font-size: var(--font-size--small);
 }
 
 .loader,

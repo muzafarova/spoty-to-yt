@@ -84,7 +84,7 @@
         }
 
         function listItemUo({ name, artist, URL, thumbnail }) {
-            return `<li><article><img src=${thumbnail}><header><b>${name}</b><small>${artist}</small></header><address><a href="${URL}" target="__song">${URL}</a></address></article></li>`;
+            return `<li><article><a href="${URL}" target="__song"><img src=${thumbnail}></a><header><b>${name}</b><small>${artist}</small></header><address><a href="${URL}" target="__song">${URL}</a></address></article></li>`;
         }
 
         function listWrapperUi(items = []) {
