@@ -47,7 +47,7 @@
                 button.disabled = false;
             }
 
-            result.innerHTML = listWrapperUi(output);
+            result.innerHTML = listWrapperUi(output, url);
         });
 
         async function main(url) {
@@ -87,7 +87,7 @@
             return `<li><article><a href="${URL}" target="__song"><img src=${thumbnail}></a><header><b>${name}</b><small>${artist}</small></header><address><a href="${URL}" target="__song">${URL}</a></address></article></li>`;
         }
 
-        function listWrapperUi(items = []) {
+        function listWrapperUi(items = [], url) {
             if (!Array.isArray(items)) {
                 throw new Error('items must be array');
             }
@@ -103,8 +103,23 @@
                     return listItemUo(song);
                 });
 
+            const downloadBtn = () => {
+                const data = {
+                    playlist: url,
+                    songs: items
+                };
+                const json = JSON.stringify(data, null, 2);
+                const blob = new Blob([json], {type: "application/json"});
+                const href  = URL.createObjectURL(blob);
+
+                return `<a href="${href}" download="songs.json">Download songs info</a>`
+            }
+
             return `<section>
-                <header>Here are your ${plrz(songItems, 'song')}</header>
+                <header>
+                    <h1>Here are your ${plrz(songItems, 'song')}</h1>
+                    ${downloadBtn()}
+                </header>
                 <ul>${songItems.join('')}</ul>
             </section>`;
 
