@@ -14,7 +14,7 @@
         <form>
             <label for="listId">
                 <b>Spotify</b>
-                playlist or album ID
+                playlist or album URL
             </label>
             <div>
                 <input
@@ -102,6 +102,7 @@
                     };
                     return listItemUo(song);
                 });
+
             return `<section>
                 <header>Here are your ${plrz(songItems, 'song')}</header>
                 <ul>${songItems.join('')}</ul>
