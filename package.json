@@ -1,6 +1,6 @@
 {
   "name": "spoty-to-yt",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An app to fetch songs from Spotify and find them on YouTube",
   "scripts": {
     "start": "vercel dev",
